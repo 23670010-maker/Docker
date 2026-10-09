@@ -1,0 +1,238 @@
+<main class="contenedor">
+
+  <header class="encabezado">
+    <h1>{{ titulo }}</h1>
+ 
+<nav>
+
+  <a routerLink="/alumnos">
+    Alumnos
+  </a>
+
+  |
+
+  <a routerLink="/academico">
+    Académico
+  </a>
+
+</nav>
+
+    <p>Administración de alumnos - Angular + Flask + MySQL</p>
+    <button
+    type="button"
+    (click)="cerrarSesion()">
+
+    Cerrar sesión
+
+    </button>
+   </header>
+
+
+
+<h1>MINIERP ESCOLAR</h1>
+
+<h2>Servicios</h2>
+
+<p>
+  API:
+  {{ estadoSistema.api }}
+</p>
+
+<p>
+  MYSQL:
+  {{ estadoSistema.mysql }}
+</p>
+
+<p>
+  REDIS:
+  {{ estadoSistema.redis }}
+</p>
+
+<h2>Módulos</h2>
+
+<ul>
+  <li>Alumnos</li>
+  <li>Académico</li>
+  <li>Seguridad</li>
+</ul>
+
+<hr>
+
+
+  <section class="panel formulario-panel">
+
+    <div class="panel-cabecera">
+      <h2>
+        @if (editandoId === null) {
+          Nuevo alumno
+        } @else {
+          Editar alumno
+        }
+      </h2>
+
+      <button type="button" (click)="nuevoAlumno()">
+        Nuevo
+      </button>
+    </div>
+
+    <form #formAlumno="ngForm" (ngSubmit)="guardarAlumno()">
+
+      <div class="form-grid">
+
+        <label>
+          Número de control
+          <input
+            type="text"
+            name="Nctrl"
+            [(ngModel)]="formulario.Nctrl"
+            required>
+        </label>
+
+        <label>
+          Nombre
+          <input
+            type="text"
+            name="nombre"
+            [(ngModel)]="formulario.nombre"
+            required>
+        </label>
+
+        <label>
+          Promedio
+          <input
+            type="number"
+            name="promedio"
+            [(ngModel)]="formulario.promedio"
+            min="0"
+            max="10"
+            step="0.01"
+            required>
+        </label>
+
+        <label>
+          Carrera
+          <input
+            type="text"
+            name="carrera"
+            [(ngModel)]="formulario.carrera"
+            required>
+        </label>
+
+        <label>
+          Semestre
+          <input
+            type="number"
+            name="semestre"
+            [(ngModel)]="formulario.semestre"
+            min="1"
+            max="20"
+            required>
+        </label>
+
+        <label>
+          Sexo
+          <select
+            name="sexo"
+            [(ngModel)]="formulario.sexo"
+            required>
+            <option value="">Seleccione</option>
+            <option value="F">F</option>
+            <option value="M">M</option>
+          </select>
+        </label>
+
+      </div>
+
+      <div class="acciones">
+        <button type="submit" [disabled]="guardando">
+          @if (guardando) {
+            Guardando...
+          } @else {
+            Guardar alumno
+          }
+        </button>
+
+        <button type="button" (click)="nuevoAlumno()">
+          Limpiar
+        </button>
+      </div>
+
+    </form>
+  </section>
+
+  @if (mensaje) {
+    <p class="mensaje">{{ mensaje }}</p>
+  }
+
+  @if (error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  <section class="panel">
+
+    <div class="panel-cabecera">
+      <h2>Lista de alumnos</h2>
+      <button type="button" (click)="cargarAlumnos()">
+        Actualizar
+      </button>
+    </div>
+
+    @if (cargando) {
+      <p class="mensaje">Consultando información...</p>
+    }
+
+    @if (!cargando) {
+
+      <div class="tabla-contenedor">
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nctrl</th>
+              <th>Nombre</th>
+              <th>Promedio</th>
+              <th>Carrera</th>
+              <th>Semestre</th>
+              <th>Sexo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+
+            @for (alumno of alumnos; track alumno.id) {
+
+              <tr>
+                <td>{{ alumno.id }}</td>
+                <td>{{ alumno.Nctrl }}</td>
+                <td>{{ alumno.nombre }}</td>
+                <td>{{ alumno.promedio }}</td>
+                <td>{{ alumno.carrera }}</td>
+                <td>{{ alumno.semestre }}</td>
+                <td>{{ alumno.sexo }}</td>
+                <td class="acciones-tabla">
+                  <button type="button" (click)="editarAlumno(alumno)">
+                    Editar
+                  </button>
+                  <button type="button" (click)="eliminarAlumno(alumno)">
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+
+            } @empty {
+              <tr>
+                <td colspan="8">No existen alumnos.</td>
+              </tr>
+            }
+
+          </tbody>
+        </table>
+
+      </div>
+    }
+
+  </section>
+
+</main>

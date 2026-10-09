@@ -1,0 +1,68 @@
+<main class="login">
+
+  <section class="login-card">
+
+    <h1>
+      MiniERP Escolar
+    </h1>
+
+    <h2>
+      Iniciar sesión
+    </h2>
+
+    <form
+      (ngSubmit)="iniciarSesion()">
+
+      <label>
+
+        Usuario
+
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="username"
+          required>
+
+      </label>
+
+      <label>
+
+        Contraseña
+
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          required>
+
+      </label>
+
+      @if (error) {
+
+        <p class="error">
+          {{ error }}
+        </p>
+
+      }
+
+      <button
+        type="submit"
+        [disabled]="cargando">
+
+        @if (cargando) {
+
+          Ingresando...
+
+        } @else {
+
+          Ingresar
+
+        }
+
+      </button>
+
+    </form>
+
+  </section>
+
+</main>

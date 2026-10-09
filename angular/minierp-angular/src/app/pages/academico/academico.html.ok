@@ -1,0 +1,157 @@
+<main class="contenedor">
+
+  <header class="encabezado">
+    <h1>Académico</h1>
+
+    <nav>
+      <a routerLink="/alumnos">
+        Alumnos
+      </a>
+
+      |
+
+      <a routerLink="/academico">
+        Académico
+      </a>
+    </nav>
+  </header>
+
+  @if (mensaje) {
+    <p class="mensaje">
+      {{ mensaje }}
+    </p>
+  }
+
+  @if (error) {
+    <p class="error">
+      {{ error }}
+    </p>
+  }
+
+  <section class="panel">
+    <div class="panel-cabecera">
+      <h2>Materias</h2>
+    </div>
+
+
+    @if (!cargando) {
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Clave</th>
+            <th>Nombre</th>
+            <th>Semestre</th>
+            <th>Créditos</th>
+            <th>Activo</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (materia of materias; track materia.id) {
+            <tr>
+              <td>{{ materia.id }}</td>
+              <td>{{ materia.clave }}</td>
+              <td>{{ materia.nombre }}</td>
+              <td>{{ materia.semestre }}</td>
+              <td>{{ materia.creditos }}</td>
+              <td>
+                @if (materia.activo) {
+                  Sí
+                } @else {
+                  No
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+
+  </section>
+
+  <section class="panel">
+
+    <div class="panel-cabecera">
+      <h2>Calificaciones</h2>
+    </div>
+
+    <label>
+      Filtrar por ID de alumno:
+
+      <input
+        type="number"
+        [(ngModel)]="alumnoSeleccionado">
+    </label>
+
+    <button
+      type="button"
+      (click)="filtrarAlumno()">
+      Filtrar
+    </button>
+    @if (cargando) {
+      <p>Cargando calificaciones...</p>
+    }
+
+    @if (!cargando) {
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NControl</th>
+            <th>Alumno</th>
+            <th>Clave</th>
+            <th>Materia</th>
+            <th>Periodo</th>
+            <th>Calificación</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (calificacion of calificaciones; track calificacion.id) {
+
+            <tr>
+              <td>{{ calificacion.id }}</td>
+              <td>{{ calificacion.Nctrl }}</td>
+              <td>{{ calificacion.alumno }}</td>
+              <td>{{ calificacion.clave }}</td>
+              <td>{{ calificacion.materia }}</td>
+              <td>{{ calificacion.periodo }}</td>
+              <td>{{ calificacion.calificacion }}</td>
+
+              <td>
+
+                @if (auth.esAdmin()) {
+
+                  <button
+                    type="button"
+                    (click)="eliminar(calificacion)">
+                    Eliminar
+                  </button>
+
+                }
+
+              </td>
+
+            </tr>
+
+          } @empty {
+
+            <tr>
+              <td colspan="8">
+                No existen calificaciones.
+              </td>
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+    }
+
+  </section>
+
+</main>

@@ -1,0 +1,9 @@
+Flask==3.1.1
+PyMySQL==1.1.1
+Flask-Cors
+Flask-JWT-Extended
+cryptography
+redis==8.1.0
+
+
+
