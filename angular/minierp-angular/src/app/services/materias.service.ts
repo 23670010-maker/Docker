@@ -48,7 +48,7 @@ export class MateriasService {
     inject(HttpClient);
 
   private apiUrl =
-    'http://localhost:8081/api/materias';
+    'http://localhost:8080/api/materias';
 
   obtenerMaterias():
     Observable<Materia[]> {

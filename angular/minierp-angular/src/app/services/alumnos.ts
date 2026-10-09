@@ -28,7 +28,7 @@ export class AlumnosService {
 
   private http = inject(HttpClient);
 
-  private apiUrl = 'http://localhost:8081/api/alumnos';
+  private apiUrl = 'http://localhost:8080/api/alumnos';
 
   obtenerAlumnos(): Observable<Alumno[]> {
     return this.http.get<Alumno[]>(this.apiUrl);

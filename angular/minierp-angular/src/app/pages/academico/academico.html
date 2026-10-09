@@ -1,31 +1,17 @@
 <main class="contenedor">
-
   <header class="encabezado">
     <h1>Académico</h1>
-
     <nav>
-      <a routerLink="/alumnos">
-        Alumnos
-      </a>
-
-      |
-
-      <a routerLink="/academico">
-        Académico
-      </a>
+      <a routerLink="/alumnos">Alumnos</a> |
+      <a routerLink="/academico">Académico</a>
     </nav>
   </header>
 
   @if (mensaje) {
-    <p class="mensaje">
-      {{ mensaje }}
-    </p>
+    <p class="mensaje">{{ mensaje }}</p>
   }
-
   @if (error) {
-    <p class="error">
-      {{ error }}
-    </p>
+    <p class="error">{{ error }}</p>
   }
 
   <section class="panel">
@@ -33,62 +19,50 @@
       <h2>Materias</h2>
     </div>
 
-
-    @if (!cargando) {
-      <table>
-        <thead>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Clave</th>
+          <th>Nombre</th>
+          <th>Semestre</th>
+          <th>Créditos</th>
+          <th>Activo</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (materia of materias; track materia.id) {
           <tr>
-            <th>ID</th>
-            <th>Clave</th>
-            <th>Nombre</th>
-            <th>Semestre</th>
-            <th>Créditos</th>
-            <th>Activo</th>
+            <td>{{ materia.id }}</td>
+            <td>{{ materia.clave }}</td>
+            <td>{{ materia.nombre }}</td>
+            <td>{{ materia.semestre }}</td>
+            <td>{{ materia.creditos }}</td>
+            <td>{{ materia.activo ? 'Sí' : 'No' }}</td>
           </tr>
-        </thead>
-
-        <tbody>
-          @for (materia of materias; track materia.id) {
-            <tr>
-              <td>{{ materia.id }}</td>
-              <td>{{ materia.clave }}</td>
-              <td>{{ materia.nombre }}</td>
-              <td>{{ materia.semestre }}</td>
-              <td>{{ materia.creditos }}</td>
-              <td>
-                @if (materia.activo) {
-                  Sí
-                } @else {
-                  No
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    }
-
+        }
+      </tbody>
+    </table>
   </section>
 
   <section class="panel">
-
     <div class="panel-cabecera">
       <h2>Calificaciones</h2>
     </div>
 
-    <label>
-      Filtrar por ID de alumno:
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+      <label for="filtroId">Filtrar por ID de alumno:</label>
+      <input 
+        id="filtroId" 
+        type="number" 
+        [(ngModel)]="alumnoSeleccionado" 
+        (keyup.enter)="filtrarAlumno()"
+        placeholder="Ej. 2, 8, 16"
+      />
+      <button type="button" (click)="filtrarAlumno()">Filtrar</button>
+      <button type="button" style="background-color: #64748b;" (click)="alumnoSeleccionado = null; cargarCalificaciones()">Ver todos</button>
+    </div>
 
-      <input
-        type="number"
-        [(ngModel)]="alumnoSeleccionado">
-    </label>
-
-    <button
-      type="button"
-      (click)="filtrarAlumno()">
-      Filtrar
-    </button>
     @if (cargando) {
       <p>Cargando calificaciones...</p>
     }
@@ -107,11 +81,8 @@
             <th>Acciones</th>
           </tr>
         </thead>
-
         <tbody>
-
           @for (calificacion of calificaciones; track calificacion.id) {
-
             <tr>
               <td>{{ calificacion.id }}</td>
               <td>{{ calificacion.Nctrl }}</td>
@@ -120,38 +91,21 @@
               <td>{{ calificacion.materia }}</td>
               <td>{{ calificacion.periodo }}</td>
               <td>{{ calificacion.calificacion }}</td>
-
               <td>
-
                 @if (auth.esAdmin()) {
-
-                  <button
-                    type="button"
-                    (click)="eliminar(calificacion)">
-                    Eliminar
-                  </button>
-
+                  <button type="button" (click)="eliminar(calificacion)">Eliminar</button>
                 }
-
               </td>
-
             </tr>
-
           } @empty {
-
             <tr>
-              <td colspan="8">
-                No existen calificaciones.
+              <td colspan="8" style="text-align: center; color: #64748b; padding: 16px;">
+                No existen calificaciones registradas.
               </td>
             </tr>
-
           }
-
         </tbody>
-
       </table>
     }
-
   </section>
-
 </main>

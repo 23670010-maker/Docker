@@ -20,7 +20,7 @@ export class AuthService {
   private http = inject(HttpClient);
 
   private apiUrl =
-    'http://localhost:8081/api/auth';
+    'http://localhost:8080/api/auth';
 
 
   login(
